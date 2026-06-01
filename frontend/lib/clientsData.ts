@@ -889,6 +889,63 @@ export const CLIENTS: ClientEntry[] = [
     download: "https://drive.google.com/file/d/1Edpb1pXB6_WngDM1XhqiGJL4bDGKJ85T/view?usp=sharing",
     arts: ["https://i.postimg.cc/Z5CxchH8/image.png"],
   },
+
+  {
+    title: "mttnet crack",
+    type: "ddnet cheat",
+    badge: "ddnet • cheat • crack",
+    descriptions: {
+      en: "cheat client based on tater. Crack version of it. Nothing good",
+      ru: "чит клиент на базе татера. Кряк аналогично. Ничего хорошего",
+      uk: "чит клієнт на базі татера. Кряк аналогічно. Нічого хорошого",
+      es: "cliente cheat basado en tater. Versión crack. Nada bueno",
+      zh: "基于 tater 的作弊客户端，破解版。没什么好的",
+      tr: "tater tabanlı hile istemcisi. Crack sürümü. İyi bir şey değil",
+      pt: "cliente cheat baseado no tater. Versão crack. Nada de bom",
+    },
+    image: "https://i.postimg.cc/fLmwS19y/image.png",
+    download: "https://drive.google.com/file/d/1Z6fF0TH229I2DVAkOK8twQQ2RfCilKDj/view?usp=sharing",
+    vibecoded: true,
+    arts: ["https://i.postimg.cc/Z5CxchH8/image.png"],
+  },
+  {
+    title: "zzzclient free",
+    type: "ddnet cheat",
+    badge: "ddnet • cheat",
+    descriptions: {
+      en: "cheat client based on tater",
+      ru: "чит клиент на базе татера",
+      uk: "чит клієнт на базі татера",
+      es: "cliente cheat basado en tater",
+      zh: "基于 tater 的作弊客户端",
+      tr: "tater tabanlı hile istemcisi",
+      pt: "cliente cheat baseado no tater",
+    },
+    image: "https://i.postimg.cc/05V4dc0J/image.png",
+    download: "https://drive.google.com/file/d/1qs_JulOYx23EqaXLuBkEP7eSE1kl4Lb_/view?usp=sharing",
+    vibecoded: true,
+    arts: ["https://i.postimg.cc/Z5CxchH8/image.png"],
+  },
+  {
+    title: "krx client 1.32 crack free",
+    type: "ddnet cheat",
+    badge: "ddnet • cheat • crack",
+    descriptions: {
+      en: "new KRX crack 1.32. Final version omg again",
+      ru: "новый KRX кряк 1.32. Финальная версия омг снова",
+      uk: "новий KRX кряк 1.32. Фінальна версія омг знову",
+      es: "nuevo KRX crack 1.32. Versión final omg otra vez",
+      zh: "新版 KRX 破解 1.32。最终版本 omg 又来了",
+      tr: "yeni KRX crack 1.32. Final sürümü omg yine",
+      pt: "novo KRX crack 1.32. Versão final omg de novo",
+    },
+    image: "https://i.postimg.cc/prnCfM4w/izobrazenie.png",
+    download: "https://drive.google.com/file/d/1fpWh60xLT4jeO43F53ZctX6h9nhL9apO/view?usp=sharing",
+    arts: [
+      "https://i.postimg.cc/kgb7KB0Q/image.png",
+      "https://i.postimg.cc/VNFQWMD5/image.png",
+    ],
+  },
 ];
 
 export function parseBadge(badge: string): string[] {
