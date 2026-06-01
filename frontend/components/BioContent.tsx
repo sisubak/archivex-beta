@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import { useApp } from "@/lib/AppContext";
-import { t } from "@/lib/i18n";
+import { t, type DictKey } from "@/lib/i18n";
 import LangWipe from "./LangWipe";
 
 interface BioMeta {
-nameKey: string;
-messageKey: string;
+nameKey: DictKey;
+messageKey: DictKey;
 avatar: string;
 languages: string[];
 discord?: string;
