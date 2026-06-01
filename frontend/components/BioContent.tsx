@@ -70,6 +70,8 @@ return (
 
 interface Props {
 coderId: "mister" | "luna" | "vafla";
+active?: boolean;
+title?: string;
 }
 
 export default function BioContent({ coderId }: Props) {
