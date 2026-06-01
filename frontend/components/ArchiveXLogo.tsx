@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useApp } from "@/lib/AppContext";
 import { t, tArr } from "@/lib/i18n";
 
-// sad if u check is in code and doesn found :c
-
 const IDLE_MS = 10_000;
 const QUOTE_VISIBLE_MS = 3000;
 const LINK_QUOTE_VISIBLE_MS = 6000;
