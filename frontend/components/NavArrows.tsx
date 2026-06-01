@@ -16,9 +16,7 @@ interface Position {
 }
 
 interface Stripe {
-  angleDeg: number;
-  thickness: number;
-  offset: number;
+  count: 1 | 2;
 }
 
 const BTN_SIZE = 52;
@@ -26,6 +24,12 @@ const GAP = 22;
 const LABEL_GAP = 8;
 
 const EASTER_CODE = "GIFTM4VL";
+
+const STRIPE_ANGLE = 45;
+const STRIPE_THICKNESS = 4;
+const STRIPE_GAP = 6;
+const STRIPE_COLOR_A = "rgba(250, 204, 21, 0.85)";
+const STRIPE_COLOR_B = "rgba(10, 10, 10, 0.75)";
 
 function computeSlotPosition(slot: Slot, cardRect: DOMRect): Position {
   const half = BTN_SIZE / 2;
@@ -107,140 +111,55 @@ const DISSOLVE_DURATION = 320;
 const BUBBLE_DURATION = 3000;
 const BUBBLE_FADE = 320;
 
-function rand(min: number, max: number) {
-  return Math.random() * (max - min) + min;
+function generateStripe(): Stripe {
+  return { count: Math.random() < 0.5 ? 1 : 2 };
 }
 
-function generateStripes(): Stripe[] {
-  const count = Math.random() < 0.5 ? 1 : 2;
-  const stripes: Stripe[] = [];
-  for (let i = 0; i < count; i++) {
-    const thickness = rand(7, 12);
-    const angleDeg = rand(25, 65) * (Math.random() < 0.5 ? 1 : -1);
-    const maxOffset = thickness / 2 - 1;
-    const offset = rand(-maxOffset, maxOffset);
-    stripes.push({ angleDeg, thickness, offset });
+function stripeBackground(count: 1 | 2): string {
+  const period = STRIPE_THICKNESS + STRIPE_GAP;
+  if (count === 1) {
+    return `repeating-linear-gradient(${STRIPE_ANGLE}deg,
+      ${STRIPE_COLOR_A} 0px,
+      ${STRIPE_COLOR_A} ${STRIPE_THICKNESS}px,
+      transparent ${STRIPE_THICKNESS}px,
+      transparent ${period}px)`;
   }
-  return stripes;
+  return `repeating-linear-gradient(${STRIPE_ANGLE}deg,
+    ${STRIPE_COLOR_A} 0px,
+    ${STRIPE_COLOR_A} ${STRIPE_THICKNESS}px,
+    transparent ${STRIPE_THICKNESS}px,
+    transparent ${period}px),
+    repeating-linear-gradient(${-STRIPE_ANGLE}deg,
+    ${STRIPE_COLOR_B} 0px,
+    ${STRIPE_COLOR_B} ${STRIPE_THICKNESS}px,
+    transparent ${STRIPE_THICKNESS}px,
+    transparent ${period}px)`;
 }
 
 function StripeOverlay({
-  width,
-  height,
   borderRadius,
-  stripes,
+  stripe,
   easter = false,
-  uid,
 }: {
-  width: number;
-  height: number;
   borderRadius: number;
-  stripes: Stripe[];
+  stripe: Stripe;
   easter?: boolean;
-  uid: string;
 }) {
-  const cx = width / 2;
-  const cy = height / 2;
-  const diag = Math.sqrt(width * width + height * height) + 40;
-
   return (
-    <svg
-      width={width}
-      height={height}
+    <span
+      aria-hidden="true"
+      className={easter ? "stripe-pulse" : undefined}
       style={{
         position: "absolute",
-        top: 0,
-        left: 0,
-        pointerEvents: "none",
+        inset: 0,
         borderRadius,
-        overflow: "hidden",
+        backgroundImage: stripeBackground(stripe.count),
+        pointerEvents: "none",
+        mixBlendMode: "normal",
+        opacity: easter ? 0.95 : 0.78,
+        filter: easter ? "drop-shadow(0 0 4px rgba(250,204,21,0.55))" : undefined,
       }}
-      viewBox={`0 0 ${width} ${height}`}
-    >
-      <defs>
-        <clipPath id={`clip-${uid}`}>
-          <rect width={width} height={height} rx={borderRadius} ry={borderRadius} />
-        </clipPath>
-
-        {stripes.map((s, i) => {
-          const step = Math.max(8, s.thickness * 1.4);
-          return (
-            <pattern
-              key={i}
-              id={`hazard-${uid}-${i}`}
-              patternUnits="userSpaceOnUse"
-              width={step * 2}
-              height={s.thickness}
-              patternTransform={`rotate(${s.angleDeg + 90})`}
-            >
-              <rect width={step} height={s.thickness} fill="#facc15" />
-              <rect x={step} width={step} height={s.thickness} fill="#0a0a0a" />
-            </pattern>
-          );
-        })}
-
-        {easter && (
-          <filter id={`glow-${uid}`} x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="1.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        )}
-      </defs>
-
-      <g clipPath={`url(#clip-${uid})`} filter={easter ? `url(#glow-${uid})` : undefined}>
-        {stripes.map((s, i) => {
-          const rad = (s.angleDeg * Math.PI) / 180;
-          const nx = -Math.sin(rad);
-          const ny = Math.cos(rad);
-          const px = cx + nx * s.offset;
-          const py = cy + ny * s.offset;
-          const dx = Math.cos(rad);
-          const dy = Math.sin(rad);
-          const x1 = px - dx * diag;
-          const y1 = py - dy * diag;
-          const x2 = px + dx * diag;
-          const y2 = py + dy * diag;
-
-          const hx = nx * (s.thickness / 2 - 1);
-          const hy = ny * (s.thickness / 2 - 1);
-
-          return (
-            <g key={i} className={easter ? "stripe-pulse" : undefined}>
-              <line
-                x1={x1 - nx * 1.5}
-                y1={y1 - ny * 1.5}
-                x2={x2 - nx * 1.5}
-                y2={y2 - ny * 1.5}
-                stroke="rgba(0,0,0,0.35)"
-                strokeWidth={s.thickness + 2}
-                strokeLinecap="butt"
-              />
-              <line
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke={`url(#hazard-${uid}-${i})`}
-                strokeWidth={s.thickness}
-                strokeLinecap="butt"
-              />
-              <line
-                x1={x1 + hx}
-                y1={y1 + hy}
-                x2={x2 + hx}
-                y2={y2 + hy}
-                stroke="rgba(255,255,255,0.28)"
-                strokeWidth={1}
-                strokeLinecap="butt"
-              />
-            </g>
-          );
-        })}
-      </g>
-    </svg>
+    />
   );
 }
 
@@ -253,9 +172,8 @@ export default function NavArrows({ currentId, onMove }: Props) {
   const [bubbles, setBubbles] = useState<Record<string, boolean>>({});
   const bubbleTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
-  const [stripeMap, setStripeMap] = useState<Record<string, { btn: Stripe[]; label: Stripe[] }>>({});
-
-  const stripeCacheRef = useRef<Record<string, { btn: Stripe[]; label: Stripe[] }>>({});
+  const [stripeMap, setStripeMap] = useState<Record<string, { btn: Stripe; label: Stripe }>>({});
+  const stripeCacheRef = useRef<Record<string, Record<string, { btn: Stripe; label: Stripe }>>>({});
 
   const mountTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const labelMeasureRef = useRef<HTMLDivElement | null>(null);
@@ -268,7 +186,7 @@ export default function NavArrows({ currentId, onMove }: Props) {
     if (disabledLinks.length === 0) return false;
     for (const l of disabledLinks) {
       const s = stripeMap[l.targetId];
-      if (!s || s.btn.length !== 2) return false;
+      if (!s || s.btn.count !== 2) return false;
     }
     return true;
   }, [layout, stripeMap]);
@@ -314,14 +232,19 @@ export default function NavArrows({ currentId, onMove }: Props) {
   }, [currentId, lang]);
 
   useEffect(() => {
-    const map: Record<string, { btn: Stripe[]; label: Stripe[] }> = {};
     const sec = getSection(currentId);
+    const cached = stripeCacheRef.current[currentId];
+    if (cached) {
+      setStripeMap(cached);
+      return;
+    }
+    const map: Record<string, { btn: Stripe; label: Stripe }> = {};
     for (const link of sec.nav) {
       if (link.disabled) {
-        map[link.targetId] = { btn: generateStripes(), label: generateStripes() };
+        map[link.targetId] = { btn: generateStripe(), label: generateStripe() };
       }
     }
-    stripeCacheRef.current = map;
+    stripeCacheRef.current[currentId] = map;
     setStripeMap(map);
   }, [currentId]);
 
@@ -394,8 +317,8 @@ export default function NavArrows({ currentId, onMove }: Props) {
           100% { opacity: 0; transform: translate(-50%, 6px) scale(0.92); }
         }
         @keyframes stripePulse {
-          0%, 100% { opacity: 1; }
-          50%      { opacity: 0.78; }
+          0%, 100% { opacity: 0.95; }
+          50%      { opacity: 0.7; }
         }
         .arrow-btn { transition: background 0.2s, border-color 0.2s; }
         .arrow-btn:hover {
@@ -458,12 +381,9 @@ export default function NavArrows({ currentId, onMove }: Props) {
               <ArrowIcon rotation={link.rotation} />
               {isDisabled && stripes && (
                 <StripeOverlay
-                  width={BTN_SIZE}
-                  height={BTN_SIZE}
                   borderRadius={BTN_SIZE / 2}
-                  stripes={stripes.btn}
+                  stripe={stripes.btn}
                   easter={easterUnlocked}
-                  uid={`btn-${link.targetId}`}
                 />
               )}
             </button>
@@ -482,12 +402,9 @@ export default function NavArrows({ currentId, onMove }: Props) {
               <span style={{ position: "relative", zIndex: 1 }}>{labelText}</span>
               {isDisabled && stripes && (
                 <StripeOverlay
-                  width={pos.labelWidth}
-                  height={26}
                   borderRadius={13}
-                  stripes={stripes.label}
+                  stripe={stripes.label}
                   easter={easterUnlocked}
-                  uid={`label-${link.targetId}`}
                 />
               )}
             </div>
