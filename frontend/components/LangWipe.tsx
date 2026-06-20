@@ -56,14 +56,14 @@ export default function LangWipe({
     }, duration);
 
     return () => window.clearTimeout(timer);
-  }, [lang]);
+  }, [lang, children, disabled, duration, phase]);
 
   useEffect(() => {
     if (phase === "idle") {
       setOutgoing(children);
       setIncoming(children);
     }
-  }, [children]);
+  }, [children, phase]);
 
   const animKey = `lw-${duration}`;
 

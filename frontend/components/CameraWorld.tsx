@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SECTIONS, getSection } from "@/lib/sections";
 import Section from "./Section";
 import NavArrows from "./NavArrows";
+import MobileNav from "./MobileNav";
+import MenuButton from "./MenuButton";
 
 const TRANSITION_MS = 900;
 
@@ -14,13 +16,19 @@ export default function CameraWorld() {
   const moveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const intensityTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const currentIdRef = useRef(currentId);
+  const isMovingRef = useRef(isMoving);
 
   useEffect(() => {
     currentIdRef.current = currentId;
   }, [currentId]);
 
-  const handleMove = (targetId: string) => {
+  useEffect(() => {
+    isMovingRef.current = isMoving;
+  }, [isMoving]);
+
+  const handleMove = useCallback((targetId: string) => {
     if (targetId === currentIdRef.current) return;
+    if (isMovingRef.current) return;
     setIsMoving(true);
     setMoveIntensity(0);
 
@@ -41,7 +49,7 @@ export default function CameraWorld() {
       setMoveIntensity(0);
       if (intensityTimerRef.current) clearInterval(intensityTimerRef.current);
     }, TRANSITION_MS);
-  };
+  }, []);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -52,7 +60,7 @@ export default function CameraWorld() {
     };
     window.addEventListener("archivex:navigate", handler);
     return () => window.removeEventListener("archivex:navigate", handler);
-  }, []);
+  }, [handleMove]);
 
   useEffect(() => {
     return () => {
@@ -89,6 +97,8 @@ export default function CameraWorld() {
         ))}
       </div>
       <NavArrows currentId={currentId} onMove={handleMove} />
+      <MenuButton current={currentId} onHome={() => handleMove("menu")} />
+      <MobileNav currentId={currentId} onMove={handleMove} />
     </div>
   );
 }

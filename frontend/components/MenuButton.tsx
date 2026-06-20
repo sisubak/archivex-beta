@@ -67,8 +67,10 @@ export default function MenuButton({ current, onHome }: Props) {
 
   if (!mounted || !pos || current === "menu" || current === "center") return null;
 
+  const animClass = dissolving ? "menu-btn-dissolve" : "menu-btn-anim";
+
   return (
-    <>
+    <div className="menu-btn-host">
       <style>{`
         @keyframes menuFloat {
           0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
@@ -94,13 +96,15 @@ export default function MenuButton({ current, onHome }: Props) {
           animation: menuDissolveOut 0.32s steps(6, end) both !important;
           pointer-events: none;
         }
+        @media (max-width: 768px) {
+          .menu-btn-host { display: none !important; }
+        }
       `}</style>
 
       <button
-        key={current}
         onClick={handleClick}
         aria-label="Back to main menu"
-        className={dissolving ? "menu-btn-dissolve" : "menu-btn-anim"}
+        className={animClass}
         style={{
           position: "fixed",
           left: `${pos.x}px`,
@@ -137,6 +141,6 @@ export default function MenuButton({ current, onHome }: Props) {
         </svg>
         <span>{t(lang, "menuBack")}</span>
       </button>
-    </>
+    </div>
   );
 }

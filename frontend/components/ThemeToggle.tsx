@@ -1,7 +1,6 @@
 "use client";
 
 import { useApp } from "@/lib/AppContext";
-import LangSelector from "@/components/LangSelector";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useApp();

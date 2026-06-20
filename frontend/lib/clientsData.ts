@@ -945,6 +945,24 @@ export const CLIENTS: ClientEntry[] = [
     "https://i.postimg.cc/VNFQWMD5/image.png",
   ],
 },
+{
+  title: "SirSir Client",
+  type: "ddnet cheat",
+  badge: "ddnet • cheat",
+  descriptions: {
+    en: "Client with avoid freeze functions (in configs)",
+    ru: "Клиент с функциями avoid freeze (в конфигах)",
+    uk: "Клієнт з функціями avoid freeze (у конфігах)",
+    es: "Cliente con funciones de avoid freeze (en configuraciones)",
+    zh: "带有 avoid freeze 功能的客户端（在配置中）",
+    tr: "Avoid freeze işlevlerine sahip istemci (yapılandırmalarda)",
+    pt: "Cliente com funções avoid freeze (nas configurações)",
+  },
+  image: "https://i.postimg.cc/fLVc1Dv0/DDNet-YCac-L2jezu.png",
+  download: "https://drive.google.com/drive/folders/1Uhk_96KL47OSmx44aoS7VscJrEA2ptpM?usp=sharing",
+  discord: "https://discord.gg/CT9Tv5KuUx",
+  vibecoded: true,
+},
 ];
 
 export function parseBadge(badge: string): string[] {
@@ -952,9 +970,9 @@ return badge.split("•").map((s) => s.trim()).filter(Boolean);
 }
 
 export const CLIENT_TYPE_FILTERS = [
-{ id: "all", labelKey: "clientsFilterAll" },
-{ id: "ddnet", labelKey: "clientsFilterDdnet" },
-{ id: "ddnet-cheat", labelKey: "clientsFilterDdnetCheat" },
-{ id: "teeworlds", labelKey: "clientsFilterTeeworlds" },
-{ id: "teeworlds-cheat", labelKey: "clientsFilterTeeworldsCheat" },
+  { id: "all", labelKey: "clientsFilterAll" },
+  { id: "ddnet", labelKey: "clientsFilterDdnet" },
+  { id: "ddnet cheat", labelKey: "clientsFilterDdnetCheat" },
+  { id: "teeworlds", labelKey: "clientsFilterTeeworlds" },
+  { id: "teeworlds cheat", labelKey: "clientsFilterTeeworldsCheat" },
 ] as const;

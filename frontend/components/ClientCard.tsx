@@ -1,168 +1,161 @@
 "use client";
 
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import type { ClientEntry } from "@/lib/clientsData";
 import type { Lang } from "@/lib/i18n";
 
 interface Props {
-client: ClientEntry;
-lang: Lang;
-onClick: () => void;
+  client: ClientEntry;
+  lang: Lang;
+  onClick: () => void;
 }
 
 function ClientCardBase({ client, lang, onClick }: Props) {
-const desc = client.descriptions[lang] ?? client.descriptions.en;
-const ref = useRef<HTMLButtonElement | null>(null);
-const [canHover, setCanHover] = useState(false);
+  const desc = client.descriptions[lang] ?? client.descriptions.en;
 
-useEffect(() => {
-  if (typeof window === "undefined") return;
-  const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-  setCanHover(mq.matches);
-  const onChange = (e: MediaQueryListEvent) => setCanHover(e.matches);
-  if (mq.addEventListener) mq.addEventListener("change", onChange);
-  return () => {
-    if (mq.removeEventListener) mq.removeEventListener("change", onChange);
-  };
-}, []);
-
-return (
-  <button
-    ref={ref}
-    onClick={onClick}
-    style={{
-      position: "relative",
-      textAlign: "left",
-      padding: 0,
-      border: "1px solid var(--border)",
-      borderRadius: "var(--radius-card)",
-      background: "var(--card-bg)",
-      color: "var(--text)",
-      cursor: "pointer",
-      overflow: "hidden",
-      display: "flex",
-      flexDirection: "column",
-      transition: "transform 0.18s ease, border-color 0.18s ease",
-      minHeight: 44,
-      WebkitTapHighlightColor: "transparent",
-      willChange: "transform",
-      font: "inherit",
-    }}
-    onMouseEnter={(e) => {
-      if (!canHover) return;
-      e.currentTarget.style.transform = "translateY(-2px)";
-      e.currentTarget.style.borderColor = "var(--accent, var(--text))";
-    }}
-    onMouseLeave={(e) => {
-      if (!canHover) return;
-      e.currentTarget.style.transform = "translateY(0)";
-      e.currentTarget.style.borderColor = "var(--border)";
-    }}
-    onFocus={(e) => {
-      e.currentTarget.style.borderColor = "var(--accent, var(--text))";
-    }}
-    onBlur={(e) => {
-      e.currentTarget.style.borderColor = "var(--border)";
-    }}
-  >
-    <div
+  return (
+    <button
+      onClick={onClick}
+      className="client-card"
       style={{
-        width: "100%",
-        aspectRatio: "16/9",
-        background: "var(--bg)",
-        overflow: "hidden",
         position: "relative",
+        textAlign: "left",
+        padding: 0,
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius-card)",
+        background: "var(--card-bg)",
+        color: "var(--text)",
+        cursor: "pointer",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        transition: "transform 0.18s ease, border-color 0.18s ease",
+        minHeight: 44,
+        WebkitTapHighlightColor: "transparent",
+        willChange: "transform",
+        font: "inherit",
       }}
     >
-      <img
-        src={client.image}
-        alt={client.title}
+      <style>{`
+        .client-card:hover {
+          transform: translateY(-2px);
+          border-color: var(--accent, var(--text));
+        }
+        .client-card:focus-visible {
+          border-color: var(--accent, var(--text));
+        }
+        @media (hover: none) {
+          .client-card:hover {
+            transform: none;
+            border-color: var(--border);
+          }
+        }
+        @media (max-width: 480px) {
+          .client-card:hover {
+            transform: none;
+            border-color: var(--border);
+          }
+        }
+      `}</style>
+
+      <div
         style={{
           width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
+          aspectRatio: "16/9",
+          background: "var(--bg)",
+          overflow: "hidden",
+          position: "relative",
         }}
-        loading="lazy"
-        decoding="async"
-      />
-      {client.vibecoded && (
-        <span
+      >
+        <img
+          src={client.image}
+          alt={client.title}
           style={{
-            position: "absolute",
-            top: 6,
-            right: 6,
-            fontFamily: "var(--font-mono)",
-            fontSize: "0.6rem",
-            padding: "0.2rem 0.4rem",
-            background: "rgba(0,0,0,0.6)",
-            color: "#fff",
-            borderRadius: 4,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+          }}
+          loading="lazy"
+          decoding="async"
+        />
+        {client.vibecoded && (
+          <span
+            style={{
+              position: "absolute",
+              top: 5,
+              right: 5,
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.55rem",
+              padding: "0.15rem 0.35rem",
+              background: "rgba(0,0,0,0.6)",
+              color: "#fff",
+              borderRadius: 3,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            vibe-coded
+          </span>
+        )}
+      </div>
+
+      <div
+        style={{
+          padding: "clamp(0.5rem, 1.2vw, 0.75rem)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "0.25rem",
+        }}
+      >
+        <div
+          style={{
+            fontSize: "clamp(0.8rem, 0.65rem + 0.4vw, 0.95rem)",
+            fontWeight: 600,
+            letterSpacing: "-0.01em",
+            lineHeight: 1.2,
+            wordBreak: "break-word",
+          }}
+        >
+          {client.title}
+        </div>
+        <div
+          className="font-mono"
+          style={{
+            fontSize: "0.55rem",
+            color: "var(--text-muted)",
+            opacity: 0.6,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
           }}
         >
-          vibe-coded
-        </span>
-      )}
-    </div>
-
-    <div
-      style={{
-        padding: "clamp(0.6rem, 1.5vw, 0.85rem)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.35rem",
-      }}
-    >
-      <div
-        style={{
-          fontSize: "clamp(0.85rem, 0.7rem + 0.5vw, 1rem)",
-          fontWeight: 600,
-          letterSpacing: "-0.01em",
-          lineHeight: 1.2,
-          wordBreak: "break-word",
-        }}
-      >
-        {client.title}
+          {client.badge}
+        </div>
+        <div
+          style={{
+            fontSize: "var(--fs-xs)",
+            color: "var(--text-muted)",
+            opacity: 0.85,
+            lineHeight: 1.4,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {desc}
+        </div>
       </div>
-      <div
-        className="font-mono"
-        style={{
-          fontSize: "0.6rem",
-          color: "var(--text-muted)",
-          opacity: 0.6,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-        }}
-      >
-        {client.badge}
-      </div>
-      <div
-        style={{
-          fontSize: "var(--fs-xs)",
-          color: "var(--text-muted)",
-          opacity: 0.85,
-          lineHeight: 1.4,
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-        }}
-      >
-        {desc}
-      </div>
-    </div>
-  </button>
-);
+    </button>
+  );
 }
 
 const ClientCard = memo(ClientCardBase, (prev, next) => {
-return (
-  prev.client === next.client &&
-  prev.lang === next.lang &&
-  prev.onClick === next.onClick
-);
+  return (
+    prev.client === next.client &&
+    prev.lang === next.lang &&
+    prev.onClick === next.onClick
+  );
 });
 
 export default ClientCard;
