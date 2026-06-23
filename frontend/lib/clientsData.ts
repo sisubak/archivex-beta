@@ -281,10 +281,13 @@ export const CLIENTS: ClientEntry[] = [
     tr: "harika işlevlere sahip YENИ legit istemci (belki Rclient'ten daha iyi)",
     pt: "NOVO cliente legit com funções legais (talvez melhor que o Rclient)",
   },
-  image: "https://i.postimg.cc/05HbTJFK/izobrazenie.png",
-  download: "https://drive.google.com/file/d/1h0ErcKGUr5_bI9H9_2WNOTSBjsZ64cyM/view?usp=sharing",
+  image: "https://i.postimg.cc/nLY0g1R9/izobrazenie.png",
+  download: "https://dl.bestclient.fun/win/",
   discord: "https://discord.gg/eBgyKmbxdn",
   vibecoded: true,
+  arts: [
+    "https://i.postimg.cc/2SnwLwfM/izobrazenie.png",
+  ],
 },
 {
   title: "Rclient",
