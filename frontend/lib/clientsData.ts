@@ -22,23 +22,6 @@ arts?: string[];
 
 export const CLIENTS: ClientEntry[] = [
 {
-  title: "Shalawa Client 1.1.0",
-  type: "ddnet",
-  badge: "ddnet • cheat",
-  descriptions: {
-    en: "NEW and GOOD client. Good visuals and other things",
-    ru: "НОВЫЙ и ХОРОШИЙ клиент. Приятная визуальная часть и многое другое",
-    uk: "НОВИЙ і ГАРНИЙ клієнт. Гарна візуальна частина та інше",
-    es: "Cliente NUEVO y BUENO. Buenos gráficos y más",
-    zh: "全新优秀的客户端，视觉效果良好",
-    tr: "YENİ ve ИYİ istemci. Güzel görseller ve daha fazlası",
-    pt: "Cliente NOVO e BOM. Visuais agradáveis e mais",
-  },
-  image: "https://i.postimg.cc/ZR60pfjg/izobrazenie.png",
-  download: "https://drive.google.com/drive/folders/1DuJsYMxyV0bwtI0yj6k1Zm7lp6mxQo-P?usp=sharing",
-  telegram: "https://t.me/shalawa_client",
-},
-{
   title: "krx client 1.32 crack",
   type: "ddnet",
   badge: "ddnet • cheat • crack",
